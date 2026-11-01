@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ProjectController extends Controller
 {
@@ -19,14 +21,16 @@ class ProjectController extends Controller
         ];
     }
 
-    public function index()
+    public function index(): Response
     {
-        return view('manage.projects.index', ['projects' => Project::orderByDesc('project_date')->get()]);
+        return Inertia::render('Manage/Projects/Index', [
+            'projects' => Project::orderByDesc('project_date')->get(),
+        ]);
     }
 
-    public function create()
+    public function create(): Response
     {
-        return view('manage.projects.create');
+        return Inertia::render('Manage/Projects/Create');
     }
 
     public function store(Request $request)
@@ -42,9 +46,11 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with('success', 'Project added.');
     }
 
-    public function edit(Project $project)
+    public function edit(Project $project): Response
     {
-        return view('manage.projects.edit', compact('project'));
+        return Inertia::render('Manage/Projects/Edit', [
+            'project' => $project,
+        ]);
     }
 
     public function update(Request $request, Project $project)

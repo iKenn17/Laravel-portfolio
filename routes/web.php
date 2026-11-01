@@ -4,13 +4,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Models\Project;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return view('home', ['projects' => Project::orderByDesc('project_date')->get()]);
+    return Inertia::render('Home', [
+        'projects' => Project::orderByDesc('project_date')->get(),
+    ]);
 })->name('home');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
